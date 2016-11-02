@@ -13,7 +13,8 @@
 ;; Config ;;
 ;;;;;;;;;;;;
 
-(def game-directory "games/")
+(def test-game-directory "games/test/")
+(def projetech-game-directory "games/projetech/")
 
 ;;;;;;;;;;;;;;
 ;; GraphViz ;;
@@ -297,6 +298,9 @@
 (def remaining-policies
   (view (fn [accepted] (count-policies (:nom (group-by :type accepted))))))
 
+(def trash
+  (read-string (slurp "trash.edn")))
+
 ;;;;;;;;;;;
 ;; State ;;
 ;;;;;;;;;;;
@@ -304,7 +308,7 @@
 (def game-state (atom empty-game))
 
 (defn begin-game!
-  []
+  [game-directory]
   (let [format (java.text.SimpleDateFormat. "yyyy-MM-dd_HH:mm:ss")
         prefix (str game-directory (.format format (java.util.Date.)))
         game-data-file (str prefix ".edn")
@@ -337,6 +341,7 @@
 (def cap! (statefully cap))
 (def quiz! (statefully quiz))
 (def suspect! (statefully suspect))
+(defn trash-talk [] (println (rand-nth trash)))
 
 (defn end-game!
   []
